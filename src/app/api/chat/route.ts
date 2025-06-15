@@ -12,7 +12,7 @@ export async function POST(req: Request) {
     });
 
     const result = streamText({
-        model: google('gemini-2.0-flash'),
+        model: google('gemini-2.5-flash-preview-04-17'),
         system: 'You are a helpful assistant.',
         messages,
     });
