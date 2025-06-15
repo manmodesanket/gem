@@ -1,4 +1,4 @@
-import React from "react";
+import { AIMessages } from "./AIMessages";
 
 interface Message {
   id: string;
@@ -21,10 +21,14 @@ export function Messages({ messages }: { messages: Message[] }) {
                 : ""
             }
           >
-            {message.content}
+            {message.role === "assistant" ? (
+              <AIMessages content={message.content} />
+            ) : (
+              message.content
+            )}
           </div>
         </div>
       ))}
     </>
   );
-} 
+}
