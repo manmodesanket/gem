@@ -1,3 +1,4 @@
+import React, { useEffect, useRef } from "react";
 import { AIMessages } from "./AIMessages";
 
 interface Message {
@@ -7,6 +8,12 @@ interface Message {
 }
 
 export function Messages({ messages }: { messages: Message[] }) {
+  const endRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    endRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [messages]);
+
   return (
     <>
       {messages.map((message) => (
@@ -29,6 +36,8 @@ export function Messages({ messages }: { messages: Message[] }) {
           </div>
         </div>
       ))}
+      <div ref={endRef} />
     </>
   );
 }
+ 
