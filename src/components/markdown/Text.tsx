@@ -16,6 +16,12 @@ interface InlineCodeProps extends ClassAttributes<HTMLElement>, HTMLAttributes<H
   children?: React.ReactNode;
 }
 
+interface PreProps extends ClassAttributes<HTMLPreElement>, HTMLAttributes<HTMLPreElement> {
+  children?: React.ReactNode;
+}
+
+interface LineBreakProps extends ClassAttributes<HTMLBRElement>, HTMLAttributes<HTMLBRElement> {}
+
 export function Paragraph(props: ParagraphProps) {
   const { children, className, ...rest } = props;
   return (
@@ -61,5 +67,27 @@ export function InlineCode(props: InlineCodeProps) {
     >
       {children}
     </code>
+  );
+}
+
+export function Pre(props: PreProps) {
+  const { children, className, ...rest } = props;
+  return (
+    <pre 
+      className={`bg-gray-900 text-gray-100 p-4 rounded-lg overflow-x-auto my-4 font-mono text-sm ${className || ''}`}
+      {...rest}
+    >
+      {children}
+    </pre>
+  );
+}
+
+export function LineBreak(props: LineBreakProps) {
+  const { className, ...rest } = props;
+  return (
+    <br 
+      className={`${className || ''}`}
+      {...rest}
+    />
   );
 } 

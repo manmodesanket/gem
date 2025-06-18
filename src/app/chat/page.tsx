@@ -6,7 +6,7 @@ import { ErrorMessage } from "@/components/ErrorMessage";
 import { ChatInputContainer } from "@/components/ChatInputContainer";
 
 export default function ChatPage() {
-  const { messages, input, handleInputChange, handleSubmit, error, reload } = useChat({});
+  const { messages, input, handleInputChange, handleSubmit, error, reload, status } = useChat({});
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key === "Enter" && !e.shiftKey) {
@@ -22,7 +22,7 @@ export default function ChatPage() {
         style={{ height: "calc(100vh - 96px)" }}
       >
         <div className="w-1/2 min-w-[300px] p-4 space-y-4 mb-8">
-          <Messages messages={messages} />
+          <Messages messages={messages} isLoading={status === 'submitted'}/>
         </div>
         <ErrorMessage error={error} reload={reload} />
       </div>

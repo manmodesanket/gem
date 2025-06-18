@@ -1,6 +1,6 @@
 import { CodeBlock } from "./CodeBlock";
 import { H1, H2, H3, H4, H5, H6 } from "./Heading";
-import { Paragraph, Strong, Emphasis, InlineCode } from "./Text";
+import { Paragraph, Strong, Emphasis, InlineCode, Pre, LineBreak } from "./Text";
 import { UnorderedList, OrderedList, ListItem } from "./List";
 import { Link, Image } from "./Link";
 import { Blockquote, HorizontalRule } from "./Blockquote";
@@ -9,7 +9,7 @@ import { Table, TableHead, TableBody, TableRow, TableHeader, TableCell } from ".
 // Export individual components
 export { CodeBlock };
 export { H1, H2, H3, H4, H5, H6 };
-export { Paragraph, Strong, Emphasis, InlineCode };
+export { Paragraph, Strong, Emphasis, InlineCode, Pre, LineBreak };
 export { UnorderedList, OrderedList, ListItem };
 export { Link, Image };
 export { Blockquote, HorizontalRule };
@@ -19,6 +19,7 @@ export { Table, TableHead, TableBody, TableRow, TableHeader, TableCell };
 export const markdownComponents = {
   // Code
   code: CodeBlock,
+  pre: Pre,
   
   // Headings
   h1: H1,
@@ -32,6 +33,7 @@ export const markdownComponents = {
   p: Paragraph,
   strong: Strong,
   em: Emphasis,
+  br: LineBreak,
   
   // Lists
   ul: UnorderedList,

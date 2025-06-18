@@ -1,5 +1,6 @@
 import React, { useEffect, useRef } from "react";
 import { AIMessages } from "./AIMessages";
+import { LoadingIndicator } from "./LoadingIndicator";
 
 interface Message {
   id: string;
@@ -7,7 +8,13 @@ interface Message {
   content: string;
 }
 
-export function Messages({ messages }: { messages: Message[] }) {
+export function Messages({
+  messages,
+  isLoading,
+}: {
+  messages: Message[];
+  isLoading: boolean;
+}) {
   const endRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -36,8 +43,8 @@ export function Messages({ messages }: { messages: Message[] }) {
           </div>
         </div>
       ))}
+      {isLoading && <LoadingIndicator />}
       <div ref={endRef} />
     </>
   );
 }
- 
