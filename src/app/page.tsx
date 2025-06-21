@@ -1,6 +1,11 @@
 "use client";
 
+import { useAuth } from "@/contexts/AuthContext";
+import Link from "next/link";
+
 export default function Home() {
+  const { user, loading } = useAuth();
+
   return (
     <div className="flex flex-col justify-center items-center min-h-screen bg-white">
       {/* 2D Diamond with Obsidian colors - Enlarged */}
@@ -58,12 +63,31 @@ export default function Home() {
         <p className="text-xl text-gray-600 font-light tracking-wide">
           Your Intelligent Conversation Partner
         </p>
-        <div className="mt-8">
-          <a href="/chat">
-            <button className="px-8 py-3 bg-gradient-to-r from-purple-600 to-violet-700 text-white rounded-full font-semibold hover:from-purple-500 hover:to-violet-600 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl">
-              Start Chatting
-            </button>
-          </a>
+        <div className="mt-8 space-y-4">
+          {loading ? (
+            <div className="px-8 py-3 bg-gray-200 text-gray-500 rounded-full font-semibold">
+              Loading...
+            </div>
+          ) : user ? (
+            <Link href="/chat">
+              <button className="px-8 py-3 bg-gradient-to-r from-purple-600 to-violet-700 text-white rounded-full font-semibold hover:from-purple-500 hover:to-violet-600 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl">
+                Continue Chatting
+              </button>
+            </Link>
+          ) : (
+            <div className="flex flex-col gap-4">
+              <Link href="/auth">
+                <button className="block w-full px-8 py-3 bg-gradient-to-r from-purple-600 to-violet-700 text-white rounded-full font-semibold hover:from-purple-500 hover:to-violet-600 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl">
+                  Get Started
+                </button>
+              </Link>
+              <Link href="/auth">
+                <button className="block w-full px-8 py-3 border border-purple-600 text-purple-600 rounded-full font-semibold hover:bg-purple-50 transition-all duration-300 transform hover:scale-105">
+                  Sign In
+                </button>
+              </Link>
+            </div>
+          )}
         </div>
       </div>
 
