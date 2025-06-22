@@ -14,13 +14,8 @@ import { useCallback, useState, useEffect } from "react";
 
 function ChatPageContent() {
   const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState(false);
-  const { currentConversation, saveMessage, loadConversations } =
+  const { currentConversation, conversations, saveMessage, loadConversations, loading } =
     useConversation();
-
-  // Load conversations on component mount
-  useEffect(() => {
-    loadConversations();
-  }, []);
 
   const saveAssistantMessage = useCallback(
     async (message: string) => {
@@ -59,15 +54,23 @@ function ChatPageContent() {
       e.preventDefault();
       handleSubmit(e as any);
     }
-  };
+  };  
+
+  // Load conversations on component mount
+  useEffect(() => {
+    loadConversations();
+  }, []);
 
   return (
     <div className="flex h-screen">
       {/* Desktop Sidebar */}
-      <ChatSidebar />
+      <ChatSidebar conversations={conversations} currentConversation={currentConversation} loading={loading} />
 
       {/* Mobile Sidebar */}
       <MobileChatSidebar
+        conversations={conversations}
+        currentConversation={currentConversation}
+        loading={loading}
         isOpen={isMobileSidebarOpen}
         onClose={() => setIsMobileSidebarOpen(false)}
       />

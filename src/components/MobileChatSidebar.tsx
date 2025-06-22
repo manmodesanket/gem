@@ -5,25 +5,17 @@ import { X, Plus } from "lucide-react";
 import { useConversation } from "@/hooks/useConversation";
 import { ChatShimmer } from "@/components/ChatShimmer";
 import { ConversationItem } from "@/components/ConversationItem";
+import { Conversation } from "@/lib/conversationService";
 
 interface MobileChatSidebarProps {
+  conversations: Conversation[];
+  currentConversation: Conversation | null;
+  loading: boolean;
   isOpen: boolean;
   onClose: () => void;
 }
 
-export function MobileChatSidebar({ isOpen, onClose }: MobileChatSidebarProps) {
-  const { 
-    conversations, 
-    currentConversation, 
-    loading, 
-    loadConversations, 
-  } = useConversation();
-
-  useEffect(() => {
-    if (isOpen) {
-      loadConversations();
-    }
-  }, [isOpen]);
+export function MobileChatSidebar({ isOpen, onClose, conversations, currentConversation, loading }: MobileChatSidebarProps) {
 
 
   return (

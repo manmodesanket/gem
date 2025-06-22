@@ -1,27 +1,20 @@
 "use client";
 
 import React, { useEffect } from "react";
-import { useConversation } from "@/hooks/useConversation";
 import { ChatShimmer } from "@/components/ChatShimmer";
 import { ConversationItem } from "@/components/ConversationItem";
 import { Plus } from "lucide-react";
+import { Conversation } from "@/lib/conversationService";
+import { useConversation } from "@/hooks/useConversation";
 
 interface ChatSidebarProps {
   className?: string;
+  conversations: Conversation[];
+  currentConversation: Conversation | null;
+  loading: boolean;
 }
 
-export function ChatSidebar({ className = "" }: ChatSidebarProps) {
-  const { 
-    conversations, 
-    currentConversation, 
-    loading, 
-    loadConversations, 
-  } = useConversation();
-
-  useEffect(() => {
-    loadConversations();
-  }, []);
-
+export function ChatSidebar({ className = "", conversations, currentConversation, loading }: ChatSidebarProps) {
 
   return (
     <div className={`hidden md:flex flex-col w-64 bg-gray-50 border-r border-gray-200 h-screen ${className}`}>
