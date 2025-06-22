@@ -13,12 +13,18 @@ interface MobileChatSidebarProps {
   isOpen: boolean;
   onClose: () => void;
   onConversationClick: (conversation: Conversation) => void;
-  onNewChat: () => void;
+  onNewChat?: () => void;
 }
 
-export function MobileChatSidebar({ isOpen, onClose, conversations, currentConversation, loading, onConversationClick, onNewChat }: MobileChatSidebarProps) {
-
-
+export function MobileChatSidebar({
+  isOpen,
+  onClose,
+  conversations,
+  currentConversation,
+  loading,
+  onConversationClick,
+  onNewChat,
+}: MobileChatSidebarProps) {
   return (
     <>
       {/* Backdrop */}
@@ -39,13 +45,16 @@ export function MobileChatSidebar({ isOpen, onClose, conversations, currentConve
         <div className="p-4 border-b border-gray-200 flex items-center justify-between">
           <h2 className="text-lg font-semibold text-gray-900">Chats</h2>
           <div className="flex items-center space-x-2">
-            <button
-              onClick={onNewChat}
-              className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
-              title="New Chat"
-            >
-              <Plus className="h-4 w-4 text-gray-600" />
-            </button>
+            {onNewChat && (
+              <button
+                onClick={onNewChat}
+                disabled={onNewChat === undefined}
+                className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+                title="New Chat"
+              >
+                <Plus className="h-4 w-4 text-gray-600" />
+              </button>
+            )}
             <button
               onClick={onClose}
               className="p-2 hover:bg-gray-100 rounded-full transition-colors"
@@ -78,4 +87,4 @@ export function MobileChatSidebar({ isOpen, onClose, conversations, currentConve
       </div>
     </>
   );
-} 
+}

@@ -12,18 +12,15 @@ import { HamburgerMenu } from "@/components/HamburgerMenu";
 import { useConversation } from "@/hooks/useConversation";
 import { useState, useEffect } from "react";
 import { Conversation } from "@/lib/conversationService";
-import { useRouter } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 
 function ChatPageContent() {
   const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState(false);
-  const {
-    conversations,
-    saveMessage,
-    loadConversations,
-    loading,
-    setCurrentConversation,
-  } = useConversation();
   const router = useRouter();
+  const { conversationId } = useParams();
+  const { currentConversation, conversations, saveMessage, loadConversations, loading, setCurrentConversation, loadConversation } =
+    useConversation();
+
 
   const {
     messages,
@@ -57,34 +54,53 @@ function ChatPageContent() {
       handleSubmit(e as any);
     }
   };
-
+  
   const handleConversationClick = async (conversation: Conversation) => {
-    router.push(`/chat/${conversation.id}`);
+    setCurrentConversation(conversation);
+    const newMessages = await loadConversation(conversation.id);
+    setMessages(newMessages);
+  };
+
+  const handleNewChat = async () => {
+    router.push("/chat");
   };
 
   // Load conversations on component mount
   useEffect(() => {
-    loadConversations();
-  }, []);
+    if (conversations.length === 0) {
+      loadConversations();
+    }
+  }, [conversations]);
+
+  //load current
+  useEffect(() => {
+    if (conversationId) {
+      loadConversation(conversationId as string).then((newMessages) => {
+        setMessages(newMessages);
+      });
+    }
+  }, [conversationId]);
 
   return (
     <div className="flex h-screen">
       {/* Desktop Sidebar */}
-      <ChatSidebar
-        conversations={conversations}
-        currentConversation={null}
-        loading={loading}
+      <ChatSidebar 
+        conversations={conversations} 
+        currentConversation={currentConversation} 
+        loading={loading} 
         onConversationClick={handleConversationClick}
+        onNewChat={handleNewChat}
       />
 
       {/* Mobile Sidebar */}
       <MobileChatSidebar
         conversations={conversations}
-        currentConversation={null}
+        currentConversation={currentConversation}
         loading={loading}
         isOpen={isMobileSidebarOpen}
         onClose={() => setIsMobileSidebarOpen(false)}
         onConversationClick={handleConversationClick}
+        onNewChat={handleNewChat}
       />
 
       {/* Main Chat Area */}
@@ -96,7 +112,11 @@ function ChatPageContent() {
 
           {/* Current Conversation Title */}
           <div className="flex-1 text-center md:text-left md:ml-4">
-            <h2 className="text-lg font-medium text-gray-700">New Chat</h2>
+            {currentConversation && (
+              <h2 className="text-lg font-medium text-gray-700">
+                {currentConversation.title || "New Chat"}
+              </h2>
+            )}
           </div>
 
           {/* User avatar dropdown */}
