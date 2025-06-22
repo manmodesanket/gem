@@ -1,0 +1,86 @@
+"use client";
+
+import React, { useEffect } from "react";
+import { X, Plus } from "lucide-react";
+import { useConversation } from "@/hooks/useConversation";
+import { ChatShimmer } from "@/components/ChatShimmer";
+import { ConversationItem } from "@/components/ConversationItem";
+
+interface MobileChatSidebarProps {
+  isOpen: boolean;
+  onClose: () => void;
+}
+
+export function MobileChatSidebar({ isOpen, onClose }: MobileChatSidebarProps) {
+  const { 
+    conversations, 
+    currentConversation, 
+    loading, 
+    loadConversations, 
+  } = useConversation();
+
+  useEffect(() => {
+    if (isOpen) {
+      loadConversations();
+    }
+  }, [isOpen]);
+
+
+  return (
+    <>
+      {/* Backdrop */}
+      {isOpen && (
+        <div
+          className="fixed inset-0 bg-black bg-opacity-50 z-40 md:hidden"
+          onClick={onClose}
+        />
+      )}
+
+      {/* Sidebar */}
+      <div
+        className={`fixed left-0 top-0 h-full w-80 bg-white shadow-lg transform transition-transform duration-300 ease-in-out z-50 md:hidden ${
+          isOpen ? "translate-x-0" : "-translate-x-full"
+        }`}
+      >
+        {/* Header */}
+        <div className="p-4 border-b border-gray-200 flex items-center justify-between">
+          <h2 className="text-lg font-semibold text-gray-900">Chats</h2>
+          <div className="flex items-center space-x-2">
+            <button
+              className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+              title="New Chat"
+            >
+              <Plus className="h-4 w-4 text-gray-600" />
+            </button>
+            <button
+              onClick={onClose}
+              className="p-2 hover:bg-gray-100 rounded-full transition-colors"
+            >
+              <X className="h-5 w-5 text-gray-500" />
+            </button>
+          </div>
+        </div>
+
+        {/* Chat List */}
+        <div className="flex-1 overflow-y-auto p-4 space-y-3">
+          {loading ? (
+            <ChatShimmer count={6} />
+          ) : conversations.length > 0 ? (
+            conversations.map((conversation) => (
+              <ConversationItem
+                key={conversation.id}
+                conversation={conversation}
+                isActive={currentConversation?.id === conversation.id}
+              />
+            ))
+          ) : (
+            <div className="text-center text-gray-500 mt-8">
+              <p className="text-sm">No conversations yet</p>
+              <p className="text-xs mt-1">Start a new chat to begin</p>
+            </div>
+          )}
+        </div>
+      </div>
+    </>
+  );
+} 
