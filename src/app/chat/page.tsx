@@ -11,21 +11,16 @@ import { MobileChatSidebar } from "@/components/MobileChatSidebar";
 import { HamburgerMenu } from "@/components/HamburgerMenu";
 import { useConversation } from "@/hooks/useConversation";
 import { useCallback, useState, useEffect } from "react";
+import { Conversation } from "@/lib/conversationService";
 
 function ChatPageContent() {
   const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState(false);
-  const { currentConversation, conversations, saveMessage, loadConversations, loading } =
+  const { currentConversation, conversations, saveMessage, loadConversations, loading, setCurrentConversation, loadConversation } =
     useConversation();
-
-  const saveAssistantMessage = useCallback(
-    async (message: string) => {
-      await saveMessage("assistant", message);
-    },
-    [currentConversation, saveMessage],
-  );
 
   const {
     messages,
+    setMessages,
     input,
     setInput,
     handleInputChange,
@@ -36,7 +31,7 @@ function ChatPageContent() {
   } = useChat({
     onFinish: async (message) => {
       if (message.content) {
-        saveAssistantMessage(message.content);
+        saveMessage("assistant", message.content);
       }
     },
   });
@@ -54,7 +49,22 @@ function ChatPageContent() {
       e.preventDefault();
       handleSubmit(e as any);
     }
-  };  
+  };
+  
+  const handleConversationClick = async (conversation: Conversation) => {
+    setCurrentConversation(conversation);
+    const newMessages = await loadConversation(conversation.id);
+    setMessages(newMessages);
+  };
+
+  const handleNewChat = async () => {
+    // Clear current messages
+    setMessages([]);
+    // Clear current conversation
+    setCurrentConversation(null);
+    // Close mobile sidebar if open
+    setIsMobileSidebarOpen(false);
+  };
 
   // Load conversations on component mount
   useEffect(() => {
@@ -64,7 +74,13 @@ function ChatPageContent() {
   return (
     <div className="flex h-screen">
       {/* Desktop Sidebar */}
-      <ChatSidebar conversations={conversations} currentConversation={currentConversation} loading={loading} />
+      <ChatSidebar 
+        conversations={conversations} 
+        currentConversation={currentConversation} 
+        loading={loading} 
+        onConversationClick={handleConversationClick}
+        onNewChat={handleNewChat}
+      />
 
       {/* Mobile Sidebar */}
       <MobileChatSidebar
@@ -73,6 +89,8 @@ function ChatPageContent() {
         loading={loading}
         isOpen={isMobileSidebarOpen}
         onClose={() => setIsMobileSidebarOpen(false)}
+        onConversationClick={handleConversationClick}
+        onNewChat={handleNewChat}
       />
 
       {/* Main Chat Area */}

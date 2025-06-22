@@ -4,11 +4,13 @@ import { Conversation } from "@/lib/conversationService";
 interface ConversationItemProps {
   conversation: Conversation;
   isActive?: boolean;
+  onClick: () => void;
 }
 
 export function ConversationItem({
   conversation,
   isActive = false,
+  onClick,
 }: ConversationItemProps) {
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
@@ -35,6 +37,7 @@ export function ConversationItem({
           ? "bg-blue-50 border-blue-200"
           : "bg-white border-gray-100 hover:bg-gray-50"
       }`}
+      onClick={onClick}
     >
       <div className="flex items-center justify-between">
         <h3 className="font-medium text-gray-900 truncate flex-1">

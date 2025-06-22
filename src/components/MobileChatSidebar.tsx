@@ -1,8 +1,7 @@
 "use client";
 
-import React, { useEffect } from "react";
+import React from "react";
 import { X, Plus } from "lucide-react";
-import { useConversation } from "@/hooks/useConversation";
 import { ChatShimmer } from "@/components/ChatShimmer";
 import { ConversationItem } from "@/components/ConversationItem";
 import { Conversation } from "@/lib/conversationService";
@@ -13,9 +12,11 @@ interface MobileChatSidebarProps {
   loading: boolean;
   isOpen: boolean;
   onClose: () => void;
+  onConversationClick: (conversation: Conversation) => void;
+  onNewChat: () => void;
 }
 
-export function MobileChatSidebar({ isOpen, onClose, conversations, currentConversation, loading }: MobileChatSidebarProps) {
+export function MobileChatSidebar({ isOpen, onClose, conversations, currentConversation, loading, onConversationClick, onNewChat }: MobileChatSidebarProps) {
 
 
   return (
@@ -39,6 +40,7 @@ export function MobileChatSidebar({ isOpen, onClose, conversations, currentConve
           <h2 className="text-lg font-semibold text-gray-900">Chats</h2>
           <div className="flex items-center space-x-2">
             <button
+              onClick={onNewChat}
               className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
               title="New Chat"
             >
@@ -63,6 +65,7 @@ export function MobileChatSidebar({ isOpen, onClose, conversations, currentConve
                 key={conversation.id}
                 conversation={conversation}
                 isActive={currentConversation?.id === conversation.id}
+                onClick={() => onConversationClick(conversation)}
               />
             ))
           ) : (

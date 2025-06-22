@@ -12,9 +12,11 @@ interface ChatSidebarProps {
   conversations: Conversation[];
   currentConversation: Conversation | null;
   loading: boolean;
+  onConversationClick: (conversation: Conversation) => void;
+  onNewChat: () => void;
 }
 
-export function ChatSidebar({ className = "", conversations, currentConversation, loading }: ChatSidebarProps) {
+export function ChatSidebar({ className = "", conversations, currentConversation, loading, onConversationClick, onNewChat }: ChatSidebarProps) {
 
   return (
     <div className={`hidden md:flex flex-col w-64 bg-gray-50 border-r border-gray-200 h-screen ${className}`}>
@@ -23,6 +25,7 @@ export function ChatSidebar({ className = "", conversations, currentConversation
         <div className="flex items-center justify-between">
           <h2 className="text-lg font-semibold text-gray-900">Chats</h2>
           <button
+            onClick={onNewChat}
             className="p-2 hover:bg-gray-200 rounded-lg transition-colors"
             title="New Chat"
           >
@@ -41,6 +44,7 @@ export function ChatSidebar({ className = "", conversations, currentConversation
               key={conversation.id}
               conversation={conversation}
               isActive={currentConversation?.id === conversation.id}
+              onClick={() => onConversationClick(conversation)}
             />
           ))
         ) : (
