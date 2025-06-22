@@ -6,7 +6,8 @@ interface ChatInputContainerProps {
   input: string;
   handleInputChange: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
   handleKeyDown: (e: React.KeyboardEvent<HTMLTextAreaElement>) => void;
-  handleSubmit: (e: React.FormEvent) => void;
+  handleSubmit: (e: React.FormEvent<HTMLFormElement>) => Promise<void>;
+  isLoading: boolean;
 }
 
 export function ChatInputContainer({
@@ -14,6 +15,7 @@ export function ChatInputContainer({
   handleInputChange,
   handleKeyDown,
   handleSubmit,
+  isLoading,
 }: ChatInputContainerProps) {
   return (
     <form onSubmit={handleSubmit} className="w-full flex justify-center z-10 border-t" style={{ height: 96 }}>
@@ -27,7 +29,7 @@ export function ChatInputContainer({
           className="flex-1 h-full"
           rows={1}
         />
-        <Button type="submit">Send</Button>
+        <Button type="submit" disabled={isLoading}>Send</Button>
       </div>
     </form>
   );
