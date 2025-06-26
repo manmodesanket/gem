@@ -6,13 +6,15 @@ import { ErrorMessage } from "@/components/ErrorMessage";
 import { ChatInputContainer } from "@/components/ChatInputContainer";
 import { useConversation } from "@/hooks/useConversation";
 import { useEffect } from "react";
+import { useRouter } from "next/navigation";
 
 interface ChatProps {
   conversationId?: string;
 }
 
 export function Chat({ conversationId }: ChatProps) {
-  const { saveMessage, loadConversation, setCurrentConversation } = useConversation();
+  const router = useRouter();
+  const { saveMessage, loadConversation, setCurrentConversation, currentConversation, currentConversationRef } = useConversation();
 
   const {
     messages,
@@ -27,7 +29,14 @@ export function Chat({ conversationId }: ChatProps) {
   } = useChat({
     onFinish: async (message) => {
       if (message.content) {
-        saveMessage("assistant", message.content);
+        await saveMessage("assistant", message.content);
+        
+        // If we're on a new chat (no conversationId) and we have a current conversation, navigate to it
+        // Use ref to get the current value even after state updates
+        if (!conversationId && currentConversationRef.current?.id) {
+          // Use History API to update URL without re-rendering the component
+          window.history.replaceState(null, '', `/chat/${currentConversationRef.current.id}`);
+        }
       }
     },
   });
@@ -50,17 +59,21 @@ export function Chat({ conversationId }: ChatProps) {
   // Load conversation messages when conversationId changes
   useEffect(() => {
     if (conversationId) {
-      loadConversation(conversationId as string).then((newMessages) => {
-        setMessages(newMessages);
-      });
+      // Only load if the conversation changed
+      if (currentConversation?.id !== conversationId) {
+        loadConversation(conversationId as string).then((newMessages) => {
+          setMessages(newMessages);
+        });
+      }
     } else {
-      // Clear messages for new chat
+      // Clear messages when on new chat (no conversationId)
+      // This ensures messages are cleared when clicking "New Chat"
       setMessages([]);
-      setCurrentConversation(null);
+      if (currentConversation) {
+        setCurrentConversation(null);
+      }
     }
   }, [conversationId]);
-
-  console.log(messages);
 
   return (
     <>

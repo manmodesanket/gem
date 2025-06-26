@@ -1,8 +1,7 @@
 "use client";
 
 import { useState, useRef, useCallback } from 'react';
-import { ConversationService, ConversationWithMessages, type Conversation, type Message } from '@/lib/conversationService';
-import { User } from '@supabase/supabase-js';
+import { ConversationService, type Conversation, type Message } from '@/lib/conversationService';
 
 export function useConversation() {
   const [currentConversation, setCurrentConversation] = useState<Conversation | null>(null);
@@ -85,6 +84,7 @@ export function useConversation() {
 
   return {
     currentConversation,
+    currentConversationRef,
     setCurrentConversation: setCurrentConversationWithRef,
     conversations,
     loading,

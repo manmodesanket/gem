@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 import { AuthHeader } from "@/components/AuthHeader";
 import { ChatSidebar } from "@/components/ChatSidebar";
 import { MobileChatSidebar } from "@/components/MobileChatSidebar";
@@ -16,12 +16,14 @@ export default function ChatLayout({
 }) {
   const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState(false);
   const router = useRouter();
+  const pathname = usePathname();
   const {
     currentConversation,
     conversations,
     loadConversations,
     loading,
     setCurrentConversation,
+    loadConversation,
   } = useConversation();
 
   const handleConversationClick = async (conversation: Conversation) => {
@@ -40,6 +42,35 @@ export default function ChatLayout({
       loadConversations();
     }
   }, []);
+
+  // Handle URL changes to update current conversation and reload conversations
+  useEffect(() => {
+    const conversationIdMatch = pathname.match(/^\/chat\/(.+)$/);
+    
+    if (conversationIdMatch) {
+      const conversationId = conversationIdMatch[1];
+      
+      // If the URL shows a conversation that's different from current, update it
+      if (currentConversation?.id !== conversationId) {
+        // Find the conversation in the list first
+        const existingConversation = conversations.find(conv => conv.id === conversationId);
+        
+        if (existingConversation) {
+          setCurrentConversation(existingConversation);
+        } else {
+          // If not found in list, load it and refresh conversations
+          loadConversation(conversationId).then(() => {
+            loadConversations(); // Refresh the list to include the new conversation
+          });
+        }
+      }
+    } else if (pathname === '/chat') {
+      // On new chat, clear current conversation if it exists
+      if (currentConversation) {
+        setCurrentConversation(null);
+      }
+    }
+  }, [pathname]);
 
   return (
     <div className="flex h-screen">
