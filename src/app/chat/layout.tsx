@@ -103,7 +103,7 @@ export default function ChatLayout({
 
           {/* Current Conversation Title */}
           <div className="flex-1 text-center md:text-left md:ml-4">
-            <h2 className="text-lg font-medium text-gray-700">
+            <h2 className="text-lg font-semibold text-gray-900">
               {currentConversation?.title || "New Chat"}
             </h2>
           </div>

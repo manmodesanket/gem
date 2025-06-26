@@ -33,7 +33,7 @@ export function AuthHeader({ className = "" }: AuthHeaderProps) {
   const email = user?.email || "";
 
   return (
-    <div className={`flex justify-end items-center p-4 ${className}`}>
+    <div className={`flex justify-end items-center ${className}`}>
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Avatar className="h-8 w-8 cursor-pointer hover:ring-2 hover:ring-gray-300 transition-all">
