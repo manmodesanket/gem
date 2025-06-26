@@ -13,9 +13,11 @@ interface ChatProps {
 }
 
 export function Chat({ conversationId }: ChatProps) {
-  const router = useRouter();
-  const { saveMessage, loadConversation, setCurrentConversation, currentConversation, currentConversationRef } = useConversation();
 
+  const router = useRouter();
+
+  const { saveMessage, loadConversation, setCurrentConversation, currentConversation, currentConversationRef } = useConversation();
+  
   const {
     messages,
     setMessages,
@@ -35,7 +37,7 @@ export function Chat({ conversationId }: ChatProps) {
         // Use ref to get the current value even after state updates
         if (!conversationId && currentConversationRef.current?.id) {
           // Use History API to update URL without re-rendering the component
-          window.history.replaceState(null, '', `/chat/${currentConversationRef.current.id}`);
+         router.push(`/chat/${currentConversationRef.current.id}`);
         }
       }
     },
@@ -67,7 +69,7 @@ export function Chat({ conversationId }: ChatProps) {
       }
     } else {
       // Clear messages when on new chat (no conversationId)
-      // This ensures messages are cleared when clicking "New Chat"
+      // This ensures messages are cleared when clicking "New Chat" or deleting current conversation
       setMessages([]);
       if (currentConversation) {
         setCurrentConversation(null);
@@ -78,7 +80,7 @@ export function Chat({ conversationId }: ChatProps) {
   return (
     <>
       {/* Chat content */}
-      <div className="flex-1 flex flex-col items-center justify-between overflow-y-scroll">
+      <div className="flex-1 flex flex-col items-center justify-between overflow-y-auto">
         <div className="w-full max-w-4xl p-4 space-y-4 mb-8">
           <Messages messages={messages} isLoading={status === "submitted"} />
         </div>

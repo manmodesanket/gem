@@ -14,6 +14,7 @@ interface ChatSidebarProps {
   loading: boolean;
   onConversationClick: (conversation: Conversation) => void;
   onNewChat?: () => void;
+  onDeleteConversation?: (conversationId: string) => void;
 }
 
 export function ChatSidebar({
@@ -23,6 +24,7 @@ export function ChatSidebar({
   loading,
   onConversationClick,
   onNewChat,
+  onDeleteConversation,
 }: ChatSidebarProps) {
   return (
     <div
@@ -56,6 +58,7 @@ export function ChatSidebar({
               conversation={conversation}
               isActive={currentConversation?.id === conversation.id}
               onClick={() => onConversationClick(conversation)}
+              onDelete={onDeleteConversation}
             />
           ))
         ) : (

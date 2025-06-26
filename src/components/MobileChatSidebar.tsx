@@ -14,6 +14,7 @@ interface MobileChatSidebarProps {
   onClose: () => void;
   onConversationClick: (conversation: Conversation) => void;
   onNewChat?: () => void;
+  onDeleteConversation?: (conversationId: string) => void;
 }
 
 export function MobileChatSidebar({
@@ -24,6 +25,7 @@ export function MobileChatSidebar({
   loading,
   onConversationClick,
   onNewChat,
+  onDeleteConversation,
 }: MobileChatSidebarProps) {
   return (
     <>
@@ -75,6 +77,7 @@ export function MobileChatSidebar({
                 conversation={conversation}
                 isActive={currentConversation?.id === conversation.id}
                 onClick={() => onConversationClick(conversation)}
+                onDelete={onDeleteConversation}
               />
             ))
           ) : (

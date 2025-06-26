@@ -9,7 +9,7 @@ export default function ChatPage() {
 
   return (
     <ProtectedRoute>
-      <Chat conversationId={conversationId as string} />
+      <Chat key={conversationId as string} conversationId={conversationId as string} />
     </ProtectedRoute>
   );
 }

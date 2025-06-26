@@ -24,6 +24,7 @@ export default function ChatLayout({
     loading,
     setCurrentConversation,
     loadConversation,
+    deleteConversation,
   } = useConversation();
 
   const handleConversationClick = async (conversation: Conversation) => {
@@ -34,6 +35,17 @@ export default function ChatLayout({
   const handleNewChat = async () => {
     setCurrentConversation(null);
     router.push("/chat");
+  };
+
+  const handleDeleteConversation = async (conversationId: string) => {
+    const success = await deleteConversation(conversationId);
+    if (success) {
+      // If we deleted the current conversation, navigate to new chat
+      if (currentConversation?.id === conversationId) {
+        setCurrentConversation(null);
+        router.push("/chat");
+      }
+    }
   };
 
   // Load conversations on component mount
@@ -81,6 +93,7 @@ export default function ChatLayout({
         loading={loading}
         onConversationClick={handleConversationClick}
         onNewChat={handleNewChat}
+        onDeleteConversation={handleDeleteConversation}
       />
 
       {/* Mobile Sidebar */}
@@ -92,6 +105,7 @@ export default function ChatLayout({
         onClose={() => setIsMobileSidebarOpen(false)}
         onConversationClick={handleConversationClick}
         onNewChat={handleNewChat}
+        onDeleteConversation={handleDeleteConversation}
       />
 
       {/* Main Chat Area */}

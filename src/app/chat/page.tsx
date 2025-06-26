@@ -6,7 +6,7 @@ import { Chat } from "@/components/Chat";
 export default function ChatPage() {
   return (
     <ProtectedRoute>
-      <Chat />
+      <Chat key="new-chat" />
     </ProtectedRoute>
   );
 }
