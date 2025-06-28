@@ -6,7 +6,7 @@ import { ErrorMessage } from "@/components/ErrorMessage";
 import { ChatInputContainer } from "@/components/ChatInputContainer";
 import { useConversation } from "@/hooks/useConversation";
 import { useEffect } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 
 interface ChatProps {
   conversationId?: string;
@@ -14,10 +14,13 @@ interface ChatProps {
 
 export function Chat({ conversationId }: ChatProps) {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const isNewChat = searchParams.get('q') === 'newChat';
 
   const {
     saveMessage,
     loadConversation,
+    loadConversationWithCache,
     currentConversation,
     currentConversationRef,
   } = useConversation();
@@ -40,8 +43,8 @@ export function Chat({ conversationId }: ChatProps) {
         // If we're on a new chat (no conversationId) and we have a current conversation, navigate to it
         // Use ref to get the current value even after state updates
         if (!conversationId && currentConversationRef.current?.id) {
-          // Use History API to update URL without re-rendering the component
-          router.push(`/chat/${currentConversationRef.current.id}`);
+          // Navigate with query parameter to indicate this is a new chat with cached messages
+          router.push(`/chat/${currentConversationRef.current.id}?q=newChat`);
         }
       }
     },
@@ -65,14 +68,23 @@ export function Chat({ conversationId }: ChatProps) {
   // Load conversation messages when conversationId changes
   useEffect(() => {
     if (conversationId) {
-      // Only load if the conversation changed
-      if (currentConversation?.id !== conversationId) {
-        loadConversation(conversationId as string).then((newMessages) => {
+      // Check if this is a new chat with cached messages
+      if (isNewChat) {
+        // Load from localStorage with fallback to database
+        loadConversationWithCache(conversationId as string).then((newMessages) => {
           setMessages(newMessages);
+          // localStorage data is automatically cleared in loadConversationWithCache
         });
+      } else {
+        // Only load if the conversation changed (normal flow)
+        if (currentConversation?.id !== conversationId) {
+          loadConversation(conversationId as string).then((newMessages) => {
+            setMessages(newMessages);
+          });
+        }
       }
     }
-  }, [conversationId]);
+  }, [conversationId, isNewChat]);
 
   return (
     <>
