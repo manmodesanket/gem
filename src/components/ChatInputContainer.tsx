@@ -1,6 +1,6 @@
 import React from "react";
 import { Button } from "@/components/ui/button";
-import { ArrowUp } from "lucide-react";
+import { ArrowUp, LoaderCircle } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 interface ChatInputContainerProps {
@@ -45,7 +45,7 @@ export function ChatInputContainer({
               size="icon"
               className="ml-2 h-8 w-8 rounded-full bg-gray-900 hover:bg-gray-800 disabled:bg-gray-300 flex-shrink-0"
             >
-              <ArrowUp className="h-4 w-4 text-white" />
+              {isLoading ? <LoaderCircle className="h-4 w-4 text-white animate-spin" /> : <ArrowUp className="h-4 w-4 text-white" />}
             </Button>
           </div>
         </div>
