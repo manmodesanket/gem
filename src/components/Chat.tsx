@@ -13,11 +13,15 @@ interface ChatProps {
 }
 
 export function Chat({ conversationId }: ChatProps) {
-
   const router = useRouter();
 
-  const { saveMessage, loadConversation, setCurrentConversation, currentConversation, currentConversationRef } = useConversation();
-  
+  const {
+    saveMessage,
+    loadConversation,
+    currentConversation,
+    currentConversationRef,
+  } = useConversation();
+
   const {
     messages,
     setMessages,
@@ -32,12 +36,12 @@ export function Chat({ conversationId }: ChatProps) {
     onFinish: async (message) => {
       if (message.content) {
         await saveMessage("assistant", message.content);
-        
+
         // If we're on a new chat (no conversationId) and we have a current conversation, navigate to it
         // Use ref to get the current value even after state updates
         if (!conversationId && currentConversationRef.current?.id) {
           // Use History API to update URL without re-rendering the component
-         router.push(`/chat/${currentConversationRef.current.id}`);
+          router.push(`/chat/${currentConversationRef.current.id}`);
         }
       }
     },
@@ -67,13 +71,6 @@ export function Chat({ conversationId }: ChatProps) {
           setMessages(newMessages);
         });
       }
-    } else {
-      // Clear messages when on new chat (no conversationId)
-      // This ensures messages are cleared when clicking "New Chat" or deleting current conversation
-      setMessages([]);
-      if (currentConversation) {
-        setCurrentConversation(null);
-      }
     }
   }, [conversationId]);
 
@@ -97,4 +94,4 @@ export function Chat({ conversationId }: ChatProps) {
       />
     </>
   );
-} 
+}

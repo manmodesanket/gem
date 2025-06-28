@@ -44,7 +44,7 @@ export function useConversation() {
   };
 
   // Updated saveMessage to create conversation if none exists
-  const saveMessage = useCallback(async (role: 'user' | 'assistant', content: string) => {
+  const saveMessage = async (role: 'user' | 'assistant', content: string) => {
     // Get the most current conversation state from ref
     let thisConversation = currentConversationRef.current;
     
@@ -69,7 +69,7 @@ export function useConversation() {
     }
     
     return message;
-  }, [createNewConversation]);
+  };
 
   const deleteConversation = async (conversationId: string) => {
     const success = await ConversationService.deleteConversation(conversationId);

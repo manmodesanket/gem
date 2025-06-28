@@ -21,24 +21,6 @@ export function ConversationItem({
   onClick,
   onDelete,
 }: ConversationItemProps) {
-  const formatDate = (dateString: string) => {
-    const date = new Date(dateString);
-    const now = new Date();
-    const diffInHours = (now.getTime() - date.getTime()) / (1000 * 60 * 60);
-
-    if (diffInHours < 24) {
-      return date.toLocaleTimeString([], {
-        hour: "2-digit",
-        minute: "2-digit",
-      });
-    } else if (diffInHours < 168) {
-      // 7 days
-      return date.toLocaleDateString([], { weekday: "short" });
-    } else {
-      return date.toLocaleDateString([], { month: "short", day: "numeric" });
-    }
-  };
-
   const handleDelete = () => {
     if (onDelete) {
       onDelete(conversation.id);
@@ -52,16 +34,17 @@ export function ConversationItem({
           ? "bg-blue-50 border-blue-200"
           : "bg-white border-gray-100 hover:bg-gray-50"
       }`}
+      onClick={onClick}
     >
-      <div className="flex items-center justify-between" onClick={onClick}>
+      <div className="flex items-center justify-between">
         <h3 className="font-medium text-gray-900 truncate flex-1 group-hover:text-gray-700 transition-colors">
           {conversation.title || "New Chat"}
         </h3>
-        
+
         {/* Three dots menu - only show on hover or when active */}
-        <div 
+        <div
           className={`ml-2 opacity-0 group-hover:opacity-100 transition-opacity ${
-            isActive ? 'opacity-100' : ''
+            isActive ? "opacity-100" : ""
           }`}
           onClick={(e) => e.stopPropagation()}
         >
@@ -75,7 +58,7 @@ export function ConversationItem({
               </button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end" className="w-48">
-              <DropdownMenuItem 
+              <DropdownMenuItem
                 onClick={handleDelete}
                 variant="destructive"
                 className="cursor-pointer"
