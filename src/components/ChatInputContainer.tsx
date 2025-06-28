@@ -1,6 +1,7 @@
 import React from "react";
-import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
+import { ArrowUp } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 interface ChatInputContainerProps {
   input: string;
@@ -18,18 +19,36 @@ export function ChatInputContainer({
   isLoading,
 }: ChatInputContainerProps) {
   return (
-    <form onSubmit={handleSubmit} className="w-full flex justify-center z-10 border-t" style={{ height: 96 }}>
-      <div className="flex space-x-4 w-1/2 min-w-[300px] p-4 h-full items-center">
-        <Textarea
-          name="gem-chat"
-          value={input}
-          onChange={handleInputChange}
-          onKeyDown={handleKeyDown}
-          placeholder="Type your message..."
-          className="flex-1 h-full"
-          rows={1}
-        />
-        <Button type="submit" disabled={isLoading}>Send</Button>
+    <form onSubmit={handleSubmit} className="w-full flex justify-center z-10" style={{ height: 96 }}>
+      <div className="w-full max-w-4xl p-4 h-full flex items-center">
+        {/* Custom input container that looks like textarea with button inside */}
+        <div className="relative flex-1 h-full">
+          <div className={cn(
+            "flex items-center w-full h-full rounded-md border border-input bg-background px-3 py-2",
+            "ring-offset-background focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2"
+          )}>
+            {/* Input field */}
+            <textarea
+              name="gem-chat"
+              value={input}
+              onChange={handleInputChange}
+              onKeyDown={handleKeyDown}
+              placeholder="Type your message..."
+              className="flex-1 resize-none bg-transparent text-sm outline-none placeholder:text-muted-foreground disabled:cursor-not-allowed disabled:opacity-50"
+              rows={1}
+            />
+            
+            {/* Send button inside the input */}
+            <Button 
+              type="submit" 
+              disabled={isLoading || !input.trim()}
+              size="icon"
+              className="ml-2 h-8 w-8 rounded-full bg-gray-900 hover:bg-gray-800 disabled:bg-gray-300 flex-shrink-0"
+            >
+              <ArrowUp className="h-4 w-4 text-white" />
+            </Button>
+          </div>
+        </div>
       </div>
     </form>
   );
