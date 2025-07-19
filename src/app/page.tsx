@@ -75,18 +75,11 @@ export default function Home() {
               </button>
             </Link>
           ) : (
-            <div className="flex flex-col gap-4">
-              <Link href="/auth">
-                <button className="block w-full px-8 py-3 bg-gradient-to-r from-purple-600 to-violet-700 text-white rounded-full font-semibold hover:from-purple-500 hover:to-violet-600 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl">
-                  Get Started
-                </button>
-              </Link>
-              <Link href="/auth">
-                <button className="block w-full px-8 py-3 border border-purple-600 text-purple-600 rounded-full font-semibold hover:bg-purple-50 transition-all duration-300 transform hover:scale-105">
-                  Sign In
-                </button>
-              </Link>
-            </div>
+            <Link href="/auth">
+              <button className="px-8 py-3 bg-gradient-to-r from-purple-600 to-violet-700 text-white rounded-full font-semibold hover:from-purple-500 hover:to-violet-600 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl">
+                Get Started
+              </button>
+            </Link>
           )}
         </div>
       </div>

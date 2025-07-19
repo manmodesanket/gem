@@ -23,10 +23,7 @@ export function ChatInputContainer({
       <div className="w-full max-w-4xl p-4 h-full flex items-center">
         {/* Custom input container that looks like textarea with button inside */}
         <div className="relative flex-1 h-full">
-          <div className={cn(
-            "flex items-center w-full h-full rounded-md border border-input bg-background px-3 py-2",
-            "ring-offset-background focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2"
-          )}>
+          <div className={"flex items-center w-full h-full rounded-md border border-input bg-background px-3 py-2"}>
             {/* Input field */}
             <textarea
               name="gem-chat"
@@ -43,7 +40,7 @@ export function ChatInputContainer({
               type="submit" 
               disabled={isLoading || !input.trim()}
               size="icon"
-              className="ml-2 h-8 w-8 rounded-full bg-gray-900 hover:bg-gray-800 disabled:bg-gray-300 flex-shrink-0"
+              className="ml-2 h-8 w-8 rounded-full bg-gradient-to-r from-purple-600 to-violet-700 text-white hover:from-purple-500 hover:to-violet-600 disabled:from-gray-300 disabled:to-gray-300 disabled:hover:from-gray-300 disabled:hover:to-gray-300 flex-shrink-0"
             >
               {isLoading ? <LoaderCircle className="h-4 w-4 text-white animate-spin" /> : <ArrowUp className="h-4 w-4 text-white" />}
             </Button>
