@@ -38,7 +38,9 @@ export function Messages({
             {message.role === "assistant" ? (
               <AIMessages content={message.content} />
             ) : (
-              message.content
+              <div className="whitespace-pre-wrap break-words">
+                {message.content}
+              </div>
             )}
           </div>
         </div>
