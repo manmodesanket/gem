@@ -65,18 +65,18 @@ export default function Home() {
         </p>
         <div className="mt-8 space-y-4">
           {loading ? (
-            <div className="px-8 py-3 bg-gray-200 text-gray-500 rounded-full font-semibold">
+            <div className="px-4 py-2 bg-gray-200 text-gray-500 rounded-full font-semibold">
               Loading...
             </div>
           ) : user ? (
             <Link href="/chat">
-              <button className="px-8 py-3 bg-gradient-to-r from-purple-600 to-violet-700 text-white rounded-full font-semibold hover:from-purple-500 hover:to-violet-600 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl">
-                Continue Chatting
+              <button className="px-4 py-2 bg-gradient-to-r from-purple-600 to-violet-700 text-white rounded-full font-semibold hover:from-purple-500 hover:to-violet-600 shadow-lg hover:shadow-xl">
+                Continue
               </button>
             </Link>
           ) : (
             <Link href="/auth">
-              <button className="px-8 py-3 bg-gradient-to-r from-purple-600 to-violet-700 text-white rounded-full font-semibold hover:from-purple-500 hover:to-violet-600 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl">
+              <button className="px-4 py-2 bg-gradient-to-r from-purple-600 to-violet-700 text-white rounded-full font-semibold hover:from-purple-500 hover:to-violet-600 shadow-lg hover:shadow-xl">
                 Get Started
               </button>
             </Link>

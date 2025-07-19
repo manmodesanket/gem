@@ -12,7 +12,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 export default function AuthPage() {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  const [errorMsg, setErrorMsg] = useState<string | null>(null);
 
   // Login form state
   const [loginData, setLoginData] = useState({
@@ -30,7 +30,7 @@ export default function AuthPage() {
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-    setError(null);
+    setErrorMsg(null);
 
     try {
       // Check if input is email or username
@@ -46,30 +46,31 @@ export default function AuthPage() {
       } else {
         // For username login, we need to first get the email from username
         // This requires a custom function or table lookup
-        setError("Username login not yet implemented. Please use email.");
+        setErrorMsg("Username login not yet implemented. Please use email.");
         setLoading(false);
         return;
       }
 
       if (result.error) {
-        setError(result.error.message);
+        setErrorMsg(result.error.message);
       } else {
         router.push("/chat");
       }
     } catch (err) {
-      setError("An unexpected error occurred");
+      setErrorMsg("An unexpected error occurred");
     } finally {
       setLoading(false);
     }
   };
 
+  console.log(errorMsg)
   const handleSignup = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-    setError(null);
+    setErrorMsg(null);
 
     try {
-      const { error } = await supabase.auth.signUp({
+      const { error, data } = await supabase.auth.signUp({
         email: signupData.email,
         password: signupData.password,
         options: {
@@ -78,14 +79,12 @@ export default function AuthPage() {
           },
         }
       });
-
+      console.log(data)
       if (error) {
-        setError(error.message);
-      } else {
-        setError("Check your email for the confirmation link!");
+        setErrorMsg(error.message);
       }
     } catch (err) {
-      setError("An unexpected error occurred");
+      setErrorMsg("An unexpected error occurred");
     } finally {
       setLoading(false);
     }
@@ -134,9 +133,9 @@ export default function AuthPage() {
                     required
                   />
                 </div>
-                {error && (
+                {errorMsg && (
                   <div className="text-sm text-red-600 bg-red-50 p-2 rounded">
-                    {error}
+                    {errorMsg}
                   </div>
                 )}
                 <Button type="submit" className="w-full bg-gradient-to-r from-purple-600 to-violet-700 text-white hover:from-purple-500 hover:to-violet-600" disabled={loading}>
@@ -149,19 +148,6 @@ export default function AuthPage() {
             <TabsContent value="signup">
               <form onSubmit={handleSignup} className="space-y-4">
                 <div className="space-y-2">
-                  <Label htmlFor="username">Username</Label>
-                  <Input
-                    id="username"
-                    type="text"
-                    placeholder="Choose a username"
-                    value={signupData.username}
-                    onChange={(e) =>
-                      setSignupData({ ...signupData, username: e.target.value })
-                    }
-                    required
-                  />
-                </div>
-                <div className="space-y-2">
                   <Label htmlFor="email">Email</Label>
                   <Input
                     id="email"
@@ -170,6 +156,19 @@ export default function AuthPage() {
                     value={signupData.email}
                     onChange={(e) =>
                       setSignupData({ ...signupData, email: e.target.value })
+                    }
+                    required
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="username">Username</Label>
+                  <Input
+                    id="username"
+                    type="text"
+                    placeholder="Choose a username"
+                    value={signupData.username}
+                    onChange={(e) =>
+                      setSignupData({ ...signupData, username: e.target.value })
                     }
                     required
                   />
@@ -187,9 +186,9 @@ export default function AuthPage() {
                     required
                   />
                 </div>
-                {error && (
+                {errorMsg && (
                   <div className="text-sm text-red-600 bg-red-50 p-2 rounded">
-                    {error}
+                    {errorMsg}
                   </div>
                 )}
                 <Button type="submit" className="w-full bg-gradient-to-r from-purple-600 to-violet-700 text-white hover:from-purple-500 hover:to-violet-600" disabled={loading}>

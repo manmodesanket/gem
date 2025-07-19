@@ -29,11 +29,25 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Get initial session
+    // Get initial session with error handling
     const getInitialSession = async () => {
-      const { data: { session } } = await supabase.auth.getSession();
-      setUser(session?.user ?? null);
-      setLoading(false);
+      try {
+        const { data: { session }, error } = await supabase.auth.getSession();
+        
+        if (error) {
+          // Handle auth errors (like invalid refresh token) gracefully
+          console.warn("Auth session error:", error.message);
+          setUser(null);
+        } else {
+          setUser(session?.user ?? null);
+        }
+      } catch (error) {
+        // Catch any other errors (like network issues)
+        console.warn("Failed to get session:", error);
+        setUser(null);
+      } finally {
+        setLoading(false);
+      }
     };
 
     getInitialSession();
@@ -50,7 +64,11 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   }, []);
 
   const signOut = async () => {
-    await supabase.auth.signOut();
+    try {
+      await supabase.auth.signOut();
+    } catch (error) {
+      console.warn("Sign out error:", error);
+    }
   };
 
   const value = {
