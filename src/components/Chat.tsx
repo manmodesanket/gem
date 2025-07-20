@@ -5,7 +5,7 @@ import { Messages } from "@/components/Messages";
 import { ErrorMessage } from "@/components/ErrorMessage";
 import { ChatInputContainer } from "@/components/ChatInputContainer";
 import { useConversation } from "@/hooks/useConversation";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 
 interface ChatProps {
@@ -16,6 +16,7 @@ export function Chat({ conversationId }: ChatProps) {
   const router = useRouter();
   const searchParams = useSearchParams();
   const isNewChat = searchParams.get('q') === 'newChat';
+  const [selectedModel, setSelectedModel] = useState("gemini-2.5-flash");
 
   const {
     saveMessage,
@@ -36,6 +37,9 @@ export function Chat({ conversationId }: ChatProps) {
     reload,
     status,
   } = useChat({
+    body: {
+      model: selectedModel,
+    },
     onFinish: async (message) => {
       if (message.content) {
         await saveMessage("assistant", message.content);
@@ -103,6 +107,8 @@ export function Chat({ conversationId }: ChatProps) {
         handleKeyDown={handleKeyDown}
         handleSubmit={handleSubmit}
         isLoading={status === "submitted"}
+        selectedModel={selectedModel}
+        onModelChange={setSelectedModel}
       />
     </>
   );

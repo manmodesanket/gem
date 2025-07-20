@@ -4,6 +4,7 @@ import type React from "react";
 import { useRef, useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { ArrowUp, LoaderCircle } from "lucide-react";
+import { ModelSelector } from "@/components/ModelSelector";
 
 interface ChatInputContainerProps {
   input: string;
@@ -11,6 +12,8 @@ interface ChatInputContainerProps {
   handleKeyDown: (e: React.KeyboardEvent<HTMLTextAreaElement>) => void;
   handleSubmit: (e: React.FormEvent<HTMLFormElement>) => Promise<void>;
   isLoading: boolean;
+  selectedModel: string;
+  onModelChange: (modelId: string) => void;
 }
 
 export function ChatInputContainer({
@@ -19,6 +22,8 @@ export function ChatInputContainer({
   handleKeyDown,
   handleSubmit,
   isLoading,
+  selectedModel,
+  onModelChange,
 }: ChatInputContainerProps) {
   const contentEditableRef = useRef<HTMLDivElement>(null);
   const [content, setContent] = useState(input);
@@ -151,13 +156,17 @@ export function ChatInputContainer({
               />
             </div>
 
-            {/* Send button inside the input */}
-            <div className="flex justify-end">
+            {/* Model selector and Send button inside the input */}
+            <div className="flex justify-end items-center gap-2">
+              <ModelSelector
+                selectedModel={selectedModel}
+                onModelChange={onModelChange}
+              />
               <Button
                 type="submit"
                 disabled={isLoading || !content.trim()}
                 size="icon"
-                className="ml-2 h-8 w-8 rounded-full bg-gradient-to-r from-purple-600 to-violet-700 text-white hover:from-purple-500 hover:to-violet-600 disabled:from-gray-300 disabled:to-gray-300 disabled:hover:from-gray-300 disabled:hover:to-gray-300 flex-shrink-0"
+                className="h-8 w-8 rounded-full bg-gradient-to-r from-purple-600 to-violet-700 text-white hover:from-purple-500 hover:to-violet-600 disabled:from-gray-300 disabled:to-gray-300 disabled:hover:from-gray-300 disabled:hover:to-gray-300 flex-shrink-0"
               >
                 {isLoading ? (
                   <LoaderCircle className="h-4 w-4 text-white animate-spin" />
