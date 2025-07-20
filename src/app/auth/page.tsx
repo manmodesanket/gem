@@ -13,6 +13,7 @@ export default function AuthPage() {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
+  const [successMsg, setSuccessMsg] = useState<string | null>(null);
 
   // Login form state
   const [loginData, setLoginData] = useState({
@@ -63,7 +64,6 @@ export default function AuthPage() {
     }
   };
 
-  console.log(errorMsg)
   const handleSignup = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
@@ -79,9 +79,12 @@ export default function AuthPage() {
           },
         }
       });
-      console.log(data)
       if (error) {
         setErrorMsg(error.message);
+      } else if(data.user && data.user.identities && data.user.identities.length === 0) {
+        setErrorMsg("User with this email already exists. Please try logging in.");
+      } else if(data.user && data.user.identities && data.user.identities.length > 0) {
+        setSuccessMsg("Account created successfully! Please check your email to verify your account before signing in.");
       }
     } catch (err) {
       setErrorMsg("An unexpected error occurred");
