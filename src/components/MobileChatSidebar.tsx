@@ -46,28 +46,28 @@ export function MobileChatSidebar({
         {/* Header */}
         <div className="p-4 border-b border-gray-200 flex items-center justify-between">
           <h2 className="text-lg font-semibold text-gray-900">Chats</h2>
-          <div className="flex items-center space-x-2">
-            {onNewChat && (
-              <button
-                onClick={onNewChat}
-                disabled={onNewChat === undefined}
-                className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
-                title="New Chat"
-              >
-                <Plus className="h-4 w-4 text-gray-600" />
-              </button>
-            )}
-            <button
-              onClick={onClose}
-              className="p-2 hover:bg-gray-100 rounded-full transition-colors"
-            >
-              <X className="h-5 w-5 text-gray-500" />
-            </button>
-          </div>
+          <button
+            onClick={onClose}
+            className="p-2 hover:bg-gray-100 rounded-full transition-colors"
+          >
+            <X className="h-5 w-5 text-gray-500" />
+          </button>
         </div>
 
         {/* Chat List */}
         <div className="flex-1 overflow-y-auto p-4 space-y-3">
+          {/* New Chat Option */}
+          <div
+            onClick={onNewChat}
+            className="group relative px-2 py-2 rounded-lg cursor-pointer transition-colors hover:bg-gray-200"
+            title="New Chat"
+          >
+            <div className="flex items-center gap-2">
+              <Plus className="h-4 w-4 text-gray-600" />
+              <span className="text-sm font-medium text-gray-900">New Chat</span>
+            </div>
+          </div>
+
           {loading ? (
             <ChatShimmer count={6} />
           ) : conversations.length > 0 ? (

@@ -36,7 +36,7 @@ export function AuthHeader({ className = "" }: AuthHeaderProps) {
     <div className={`flex justify-end items-center ${className}`}>
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
-          <Avatar className="h-8 w-8 cursor-pointer hover:ring-2 hover:ring-gray-300 transition-all">
+          <Avatar className="h-7 w-7 cursor-pointer hover:ring-2 hover:ring-gray-300 transition-all">
             <AvatarImage src={user?.user_metadata?.avatar_url} />
             <AvatarFallback className="bg-blue-500 text-white text-sm">
               {getInitials(user?.email, user?.user_metadata?.username)}

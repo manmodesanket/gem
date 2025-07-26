@@ -58,15 +58,17 @@ export default function ChatLayout({
   // Handle URL changes to update current conversation and reload conversations
   useEffect(() => {
     const conversationIdMatch = pathname.match(/^\/chat\/(.+)$/);
-    
+
     if (conversationIdMatch) {
       const conversationId = conversationIdMatch[1];
-      
+
       // If the URL shows a conversation that's different from current, update it
       if (currentConversation?.id !== conversationId) {
         // Find the conversation in the list first
-        const existingConversation = conversations.find(conv => conv.id === conversationId);
-        
+        const existingConversation = conversations.find(
+          (conv) => conv.id === conversationId,
+        );
+
         if (existingConversation) {
           setCurrentConversation(existingConversation);
         } else {
@@ -76,7 +78,7 @@ export default function ChatLayout({
           });
         }
       }
-    } else if (pathname === '/chat') {
+    } else if (pathname === "/chat") {
       // On new chat, clear current conversation if it exists
       if (currentConversation) {
         setCurrentConversation(null);
@@ -87,14 +89,21 @@ export default function ChatLayout({
   return (
     <div className="flex h-screen">
       {/* Desktop Sidebar */}
-      <ChatSidebar
-        conversations={conversations}
-        currentConversation={currentConversation}
-        loading={loading}
-        onConversationClick={handleConversationClick}
-        onNewChat={handleNewChat}
-        onDeleteConversation={handleDeleteConversation}
-      />
+      <div className="hidden md:flex flex-col w-64 bg-gray-50 border-r border-gray-200 h-screen">
+        <div className="p-4 border-b border-gray-200">
+          <div className="flex items-center justify-between">
+            <h2 className="text-lg font-semibold text-gray-900">Chats</h2>
+          </div>
+        </div>
+        <ChatSidebar
+          conversations={conversations}
+          currentConversation={currentConversation}
+          loading={loading}
+          onConversationClick={handleConversationClick}
+          onNewChat={handleNewChat}
+          onDeleteConversation={handleDeleteConversation}
+        />
+      </div>
 
       {/* Mobile Sidebar */}
       <MobileChatSidebar
@@ -131,4 +140,4 @@ export default function ChatLayout({
       </div>
     </div>
   );
-} 
+}

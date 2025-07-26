@@ -42,7 +42,7 @@ export function ConversationItem({
   return (
     <Dialog open={isConfirmOpen} onOpenChange={setConfirmOpen}>
       <div
-        className={`relative px-2 py-1 rounded-lg cursor-pointer transition-colors ${
+        className={`group relative px-2 py-1 rounded-lg cursor-pointer transition-colors ${
           isActive
             ? "bg-gray-200"
             : "hover:bg-gray-200"
