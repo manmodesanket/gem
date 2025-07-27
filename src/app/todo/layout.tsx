@@ -6,6 +6,7 @@ import { AuthHeader } from "@/components/AuthHeader";
 import { TodoSidebar } from "@/components/TodoSidebar";
 import { MobileTodoSidebar } from "@/components/MobileTodoSidebar";
 import { HamburgerMenu } from "@/components/HamburgerMenu";
+import { PageSelector } from "@/components/PageSelector";
 import { useTodos } from "@/hooks/useTodos";
 import { TodoType } from "@/lib/todoService";
 
@@ -93,7 +94,7 @@ export default function TodoLayout({
       <div className="hidden md:flex flex-col w-64 bg-gray-50 border-r border-gray-200 h-screen">
         <div className="p-4 border-b border-gray-200">
           <div className="flex items-center justify-between">
-            <h2 className="text-lg font-semibold text-gray-900">Todos</h2>
+            <PageSelector />
           </div>
         </div>
         <TodoSidebar

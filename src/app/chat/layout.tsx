@@ -6,6 +6,7 @@ import { AuthHeader } from "@/components/AuthHeader";
 import { ChatSidebar } from "@/components/ChatSidebar";
 import { MobileChatSidebar } from "@/components/MobileChatSidebar";
 import { HamburgerMenu } from "@/components/HamburgerMenu";
+import { PageSelector } from "@/components/PageSelector";
 import { useConversation } from "@/hooks/useConversation";
 import { Conversation } from "@/lib/conversationService";
 
@@ -92,7 +93,7 @@ export default function ChatLayout({
       <div className="hidden md:flex flex-col w-64 bg-gray-50 border-r border-gray-200 h-screen">
         <div className="p-4 border-b border-gray-200">
           <div className="flex items-center justify-between">
-            <h2 className="text-lg font-semibold text-gray-900">Chats</h2>
+            <PageSelector />
           </div>
         </div>
         <ChatSidebar
